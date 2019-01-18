@@ -3,26 +3,72 @@
   <head>
     <meta charset="UTF-8" />
     <title>Temp</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
   </head>
   <body>
     <p>temperature: <span id="temperature">0</span> °C</p>
     <p>humidity: <span id="humidity">0</span> °%</p>
+    <p>date: <span id="date">0</span></p>
+
+    <canvas id="tempChart"></canvas>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      window.onload = function(){
+      window.onload = function() {
         var socket = io();
-        var temperature = document.getElementById('temperature')
-        var humidity = document.getElementById('humidity')
-        
-        socket.on('data', function(data){
+        var val;
+        var temperature = document.getElementById("temperature");
+        var humidity = document.getElementById("humidity");
+        var date = document.getElementById("date");
+
+        socket.on("data", function(data) {
           console.log(data);
-          
-          temperature.innerHTML = data.temperature;
-          humidity.innerHTML = data.humidity;
+
+          temperature.innerHTML = data[0].temperature;
+          humidity.innerHTML = data[0].humidity;
+          date.innerHTML = data[0].date;
+
+          val = data;
+        });
+
+        var ctx = document.getElementById("tempChart").getContext("2d");
+        var chart = new Chart(ctx, {
+          // The type of chart we want to create
+          type: "line",
+
+          // The data for our dataset
+          data: {
+            labels: [
+              val[9].date,
+              val[8].date,
+              val[7].date,
+              val[5].date,
+              val[4].date,
+              val[3].date,
+              val[2].date,
+              val[1].date,
+              val[0].date
+            ],
+            datasets: [
+              {
+                label: "Temperature",
+                backgroundColor: "rgb(255, 99, 132, 0.5)",
+                borderColor: "rgb(255, 99, 132, 0.5)",
+                data: [0, 10, 5, 2, 20, 30, 45]
+              },
+              {
+                label: "Humidity",
+                backgroundColor: "rgb(99, 255, 132, 0.5)",
+                borderColor: "rgb(99, 255, 132, 0.5)",
+                data: [50, 14, 45, 22, 2, 33, 3]
+              }
+            ]
+          },
+
+          // Configuration options go here
+          options: {}
         });
       };
-  
     </script>
   </body>
 </html>
