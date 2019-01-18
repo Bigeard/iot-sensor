@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import sys
 import Adafruit_DHT
-import time
+import datetime
 from pymongo import MongoClient
 # pprint library is used to make the output look more pretty
 from pprint import pprint
@@ -12,17 +12,15 @@ db=client.IOT
 serverStatusResult=db.command("serverStatus")
 pprint(serverStatusResult)
 
-
-
 while True:
 
     humidity, temperature = Adafruit_DHT.read_retry(11, 4)
-    
+
     print 'Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(temperature, humidity)
     value = {
         'temperature' : temperature,
         'humidity' : humidity,
-        'date' : datetime.datetime.utcnow()
+        'date' : datetime.datetime.now()
     }
 
     result=db.data.insert_one(value)
