@@ -36,10 +36,15 @@ io.on("connection", function(socket) {
       const stream = db.collection("data").watch();
       stream.on("change", change => {
         if (change.operationType === "insert") {
-          let result = [];
-          result.push(change.fullDocument);
-          console.log(result);
-          io.emit("data", result);
+          db.collection("data")
+          .find()
+          .sort({ _id: -1 })
+          .limit(20)
+          .toArray((err, result) => {
+            if (err) return console.log(err);
+            console.log(result);
+            io.emit("data", result);
+          });
         }
       });
     }

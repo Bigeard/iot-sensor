@@ -16,57 +16,80 @@
     <script>
       window.onload = function() {
         var socket = io();
-        var val;
         var temperature = document.getElementById("temperature");
         var humidity = document.getElementById("humidity");
         var date = document.getElementById("date");
-
-        socket.on("data", function(data) {
-          console.log(data);
-
-          temperature.innerHTML = data[0].temperature;
-          humidity.innerHTML = data[0].humidity;
-          date.innerHTML = data[0].date;
-
-          val = data;
-        });
-
         var ctx = document.getElementById("tempChart").getContext("2d");
-        var chart = new Chart(ctx, {
-          // The type of chart we want to create
-          type: "line",
 
-          // The data for our dataset
-          data: {
-            labels: [
-              val[9].date,
-              val[8].date,
-              val[7].date,
-              val[5].date,
-              val[4].date,
-              val[3].date,
-              val[2].date,
-              val[1].date,
-              val[0].date
-            ],
-            datasets: [
-              {
-                label: "Temperature",
-                backgroundColor: "rgb(255, 99, 132, 0.5)",
-                borderColor: "rgb(255, 99, 132, 0.5)",
-                data: [0, 10, 5, 2, 20, 30, 45]
-              },
-              {
-                label: "Humidity",
-                backgroundColor: "rgb(99, 255, 132, 0.5)",
-                borderColor: "rgb(99, 255, 132, 0.5)",
-                data: [50, 14, 45, 22, 2, 33, 3]
+        socket.on("data", function(dataSok) {
+          console.log(dataSok);
+          temperature.innerHTML = dataSok[0].temperature;
+          humidity.innerHTML = dataSok[0].humidity;
+          date.innerHTML = dataSok[0].date;
+          console.log(dataSok);
+
+          var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: "line",
+
+            // The data for our dataset
+            data: {
+              labels: [
+                dataSok[7].date,
+                dataSok[5].date,
+                dataSok[4].date,
+                dataSok[3].date,
+                dataSok[2].date,
+                dataSok[1].date,
+                dataSok[0].date
+              ],
+              datasets: [
+                {
+                  label: "Temperature",
+                  backgroundColor: "rgb(255, 99, 132, 0.5)",
+                  borderColor: "rgb(255, 99, 132, 0.5)",
+                  data: [
+                    dataSok[7].temperature,
+                    dataSok[5].temperature,
+                    dataSok[4].temperature,
+                    dataSok[3].temperature,
+                    dataSok[2].temperature,
+                    dataSok[1].temperature,
+                    dataSok[0].temperature
+                  ]
+                },
+                {
+                  label: "Humidity",
+                  backgroundColor: "rgb(99, 255, 132, 0.5)",
+                  borderColor: "rgb(99, 255, 132, 0.5)",
+                  data: [
+                    dataSok[7].humidity,
+                    dataSok[5].humidity,
+                    dataSok[4].humidity,
+                    dataSok[3].humidity,
+                    dataSok[2].humidity,
+                    dataSok[1].humidity,
+                    dataSok[0].humidity
+                  ]
+                }
+              ]
+            },
+
+            // Configuration options go here
+            options: {
+              animation: false,
+              scales: {
+                yAxes: [
+                  {
+                    ticks: {
+                      beginAtZero: true,
+                      suggestedMax: 50
+                    }
+                  }
+                ]
               }
-            ]
-          },
-
-          // Configuration options go here
-          options: {}
+            }
+          });
         });
       };
     </script>
