@@ -12,13 +12,14 @@ MongoClient.connect(
     db = client.db("IOT"); // whatever your database name is
 
     app.get("/", (req, res) => {
-      db.collection("data")
+      let lastrecord = db
+        .collection("data")
         .find()
+        .sort({ _id: 1 })
+        .limit(1)
         .toArray((err, result) => {
           if (err) return console.log(err);
           console.log(result);
-          console.log(result.sort({x:1}));
-          
           // renders index.ejs
           res.render("index.ejs", { data: result });
         });
