@@ -1,16 +1,20 @@
-var app = require("express")();
+var express = require('express');
+var app = express();
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
-var favicon = require('serve-favicon')
-var path = require('path')
-var port = process.env.PORT || 3000;
+var favicon = require('serve-favicon');
+var path = require('path');
+
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(express.static(__dirname + '/public'));
+
+var port = 8543;
 const MongoClient = require("mongodb").MongoClient;
 var db;
 
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 app.get("/", function(req, res) {
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile(__dirname + "/public/index.html");
 });
 
 io.on("connection", function(socket) {
@@ -51,6 +55,6 @@ io.on("connection", function(socket) {
   );
 });
 
-http.listen(3000, function() {
+http.listen(port, function() {
   console.log("listening on http://localhost:" + port + "/");
 });

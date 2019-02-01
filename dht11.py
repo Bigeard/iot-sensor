@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import sys
 import Adafruit_DHT
+from time import time, sleep
 import datetime
 from pymongo import MongoClient
 # pprint library is used to make the output look more pretty
@@ -24,3 +25,5 @@ while True:
     }
 
     result=db.data.insert_one(value)
+
+    sleep(59)
