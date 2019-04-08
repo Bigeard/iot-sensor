@@ -18,39 +18,39 @@ _BIGEARD Robin - DAVID Marceau_
 ### Matériel
 
 - DHT11  
-  ![alt text](/img/DHT11.jpg "DHT11")
+  ![dht11 sensor](/img/DHT11.jpg "DHT11")
 
 - Raspberry Pi 3 Modèle B (OS Raspbian)  
-  ![alt text](/img/raspberry.jpg "Raspberry Pi 3 Modèle B")
+  ![raspberry](/img/raspberry.jpg "Raspberry Pi 3 Modèle B")
 
 ## Script Python
 
 Fichier : [dht11.py](https://github.com/marceaudavid/iot-sensor/blob/master/dht11.py)
 
-- 3 Cables  
-  ![alt text](/img/cables.jpg "Cables")
-
 ### Câblage
 
-### Présenetation du code Python
+- 3 Cables  
+  ![cables](/img/cables.jpg "Cables")
 
-```
+### Présentation du code Python
+
+```bash
 sudo apt-get update
 sudo apt-get install python3-pip
 sudo python3 -m pip install --upgrade pip setuptools wheel
 ```
 
-```
+```bash
 sudo pip install Adafruit_DHT
 ```
 
-```
+```bash
 sudo python3 dht11.py install
 ```
 
-## Database Mongodb
-
 ## BDD MongoDB
+
+La base de données utilisé la DaaS (Database as a Service) de MongoDB: [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 
 ## Application Web Express.js
 
@@ -84,6 +84,8 @@ Fichiers : [index.html](https://github.com/marceaudavid/iot-sensor/blob/master/p
 Pour générer le graphique nous utilisons la librairie [chart.js](https://www.chartjs.org/).
 
 A chaque envoi de données le client va rafraîchir les données affichées et créer un nouveau graphique avec les données à jour.
+
+![website screenshot](/img/graph.png "Graphique")
 
 ## Lancement automatique des scripts
 
