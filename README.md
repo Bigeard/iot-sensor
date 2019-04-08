@@ -30,13 +30,15 @@ _BIGEARD Robin - DAVID Marceau_
 Fichier : [dht11.py](https://github.com/marceaudavid/iot-sensor/blob/master/dht11.py)
 
 ### Câblage
+
 Pour le Câblage il faudra mettre le brachement comme présenter sur le schéma.
-![alt text](/img/schema.jpg "schema")
-![alt text](/img/schem.jpg "schem")
+![alt text](/img/schema.png "schema")
+![alt text](/img/schem.png "schem")
 
 ### Code Python
 
 La premiere étape l'installation de Python 3, Pip 3 et Adafruit_DHT.
+
 ```bash
 sudo apt-get update
 sudo apt-get upgarde
@@ -44,14 +46,17 @@ sudo apt-get install python3
 sudo apt-get install python3-pip
 sudo python3 -m pip install --upgrade pip setuptools wheel
 ```
+
 ```bash
 sudo pip install Adafruit_DHT
 ```
+
 ```bash
 sudo python3 dht11.py install
 ```
 
 Code Python pour le DHT11
+
 ```python
 #!/usr/bin/python
 import sys
