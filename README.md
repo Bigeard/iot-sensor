@@ -23,15 +23,17 @@ _BIGEARD Robin - DAVID Marceau_
 - Raspberry Pi 3 Modèle B (OS Raspbian)  
   ![raspberry](/img/raspberry.jpg "Raspberry Pi 3 Modèle B")
 
+- 3 Cables
+
 ## Script Python
 
 Fichier : [dht11.py](https://github.com/marceaudavid/iot-sensor/blob/master/dht11.py)
 
 ### Câblage
 Pour le Câblage il faudra mettre le brachement comme présenter sur le schéma.
+![alt text](/img/schema.jpg "schema")
+![alt text](/img/schem.jpg "schem")
 
-  ![alt text](/img/schema.jpg "schema")
-  ![alt text](/img/schem.jpg "schem")
 ### Code Python
 
 La premiere étape l'installation de Python 3, Pip 3 et Adafruit_DHT.
@@ -49,7 +51,7 @@ sudo pip install Adafruit_DHT
 sudo python3 dht11.py install
 ```
 
-Code Python
+Code Python pour le DHT11
 ```python
 #!/usr/bin/python
 import sys
@@ -63,10 +65,7 @@ while True:
     sleep(59)
 ```
 
-
 ## Database Mongodb
-
-## BDD MongoDB
 
 La base de données utilisé la DaaS (Database as a Service) de MongoDB: [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 
