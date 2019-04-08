@@ -1,5 +1,7 @@
 # IOT Capteur de température
 
+_BIGEARD Robin - DAVID Marceau_
+
 ## Sommaire
 
 1. [Introduction](#Introduction)
@@ -13,13 +15,40 @@
 
 ## Introduction
 
-## Matériel
+### Matériel
 
-## Câblage
+- DHT11  
+  ![alt text](/img/DHT11.jpg "DHT11")
+
+- Raspberry Pi 3 Modèle B (OS Raspbian)  
+  ![alt text](/img/raspberry.jpg "Raspberry Pi 3 Modèle B")
 
 ## Script Python
 
 Fichier : [dht11.py](https://github.com/marceaudavid/iot-sensor/blob/master/dht11.py)
+
+- 3 Cables  
+  ![alt text](/img/cables.jpg "Cables")
+
+### Câblage
+
+### Présenetation du code Python
+
+```
+sudo apt-get update
+sudo apt-get install python3-pip
+sudo python3 -m pip install --upgrade pip setuptools wheel
+```
+
+```
+sudo pip install Adafruit_DHT
+```
+
+```
+sudo python3 dht11.py install
+```
+
+## Database Mongodb
 
 ## BDD MongoDB
 
