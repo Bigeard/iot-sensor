@@ -4,11 +4,11 @@ _BIGEARD Robin - DAVID Marceau_
 
 ## Sommaire
 
-1. [Introduction](#Introduction)    
-    1.2. [Connection à la Raspberry en SSH](#Connection-à-la-Raspberry-en-SSH)    
-    1.3. [Matériel](#Matériel)    
-    1.4. [Câblage](#Câblage)    
-    1.5. [Script Python](#Script-Python)
+1. [Introduction](#Introduction)  
+   1.2. [Connexion à la Raspberry en SSH](#Connexion-à-la-Raspberry-en-SSH)  
+   1.3. [Matériel](#Matériel)  
+   1.4. [Câblage](#Câblage)  
+   1.5. [Script Python](#Script-Python)
 2. [BDD MongoDB](#BDD-MongoDB)
 3. [Application Web Express.js](#Application-Web-Express.js)
 4. [Graphique Chart.js](#Graphique-Chart.js)
@@ -16,33 +16,38 @@ _BIGEARD Robin - DAVID Marceau_
 
 ## Introduction
 
-Il étais demander de faire de IOT pour développer nos compétance. Il falait pour ca utiliser du Python, MongoDB et NodeJs.
+Ce projet est un projet étudiant d'IoT, dont l'objectif était de créer un dispositif de mesure de la température en utilisant des technologies tel que la Raspberry, Node.js, Python et MongoDB.
 
-### Connection à la Raspberry en SSH
+### Connexion à la Raspberry en SSH
 
 Par défaut, SSH est installé sur la Raspberry Pi, mais est désactivé pour des raisons de sécurité. La première chose à faire sera donc d’activer SSH sur votre Raspberry Pi.
 
 Pour cela, il vous suffit de brancher la carte MicroSD de votre Raspberry Pi sur votre ordinateur, de vous rendre sur la carte, et de créer un fichier nommé ssh dans la partition boot.
 
-Client
+**Client :**
+
 ```bash
 ssh-keygen -t rsa
 ssh-copy-id -i id_rsa.pub pi@192.168.2.2
 ```
 
-Raspberry
+**Raspberry :**
+
 ```bash
 cp /home/pi/.ssh/authorized_key /root/.ssh/
 reboot
 ```
-Client
+
+**Client :**
+
 ```bash
 root@192.168.2.2
 ```
 
-Par Default
- - Username: pi
- - Password: raspberry
+**Par Default :**
+
+- Username: pi
+- Password: raspberry
 
 ### Matériel
 
@@ -52,12 +57,10 @@ Par Default
 - Raspberry Pi 3 Modèle B (OS Raspbian)  
   ![raspberry](/img/raspberry.jpg "Raspberry Pi 3 Modèle B")
 
-- 3 Cables
+- 3 Cables  
   ![raspberry](/img/cables.jpg "Cables")
 
 ## Script Python
-
-Fichier : [dht11.py](https://github.com/marceaudavid/iot-sensor/blob/master/dht11.py)
 
 ### Câblage
 
@@ -71,7 +74,7 @@ La premiere étape l'installation de Python 3, Pip 3 et Adafruit_DHT.
 
 ```bash
 sudo apt-get update
-sudo apt-get upgarde
+sudo apt-get upgrade
 sudo apt-get install python3
 sudo apt-get install python3-pip
 sudo python3 -m pip install --upgrade pip setuptools wheel
@@ -103,6 +106,42 @@ while True:
 ## Database Mongodb
 
 La base de données utilisé la DaaS (Database as a Service) de MongoDB: [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+
+Script Python supportant la BDD :
+
+```python
+#!/usr/bin/python
+import sys
+import Adafruit_DHT
+from time import time, sleep
+import datetime
+from pymongo import MongoClient
+# pprint library is used to make the output look more pretty
+from pprint import pprint
+# connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
+client = MongoClient("mongodb://cronoses:nuggets@cluster0-shard-00-00-lrtb2.mongodb.net:27017,cluster0-shard-00-01-lrtb2.mongodb.net:27017,cluster0-shard-00-02-lrtb2.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true")
+db=client.IOT
+# Issue the serverStatus command and print the results
+serverStatusResult=db.command("serverStatus")
+pprint(serverStatusResult)
+
+while True:
+
+    humidity, temperature = Adafruit_DHT.read_retry(11, 4)
+
+    print 'Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(temperature, humidity)
+    value = {
+        'temperature' : temperature,
+        'humidity' : humidity,
+        'date' : datetime.datetime.now()
+    }
+
+    result=db.data.insert_one(value)
+
+    sleep(59)
+```
+
+Fichier : [dht11.py](https://github.com/marceaudavid/iot-sensor/blob/master/dht11.py)
 
 ## Application Web Express.js
 
@@ -141,7 +180,9 @@ A chaque envoi de données le client va rafraîchir les données affichées et c
 
 ## Lancement automatique des scripts
 
-`sudo nano /etc/rc.local`
+```bash
+sudo nano /etc/rc.local
+```
 
 ```bash
 #!/bin/sh -e
@@ -169,6 +210,8 @@ node /home/pi/iot-express/server.js &
 exit 0
 ```
 
-Line de commande pour le debug:
+Ligne de commande pour le debug:
 
-`sudo bash -c 'python /home/pi/iot-express/dht11.py > /home/pi/iot-express/dht11.log 2>&1' &`
+```bash
+sudo bash -c 'python /home/pi/iot-express/dht11.py > /home/pi/iot-express/dht11.log 2>&1' &
+```
