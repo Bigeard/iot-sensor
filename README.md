@@ -4,16 +4,45 @@ _BIGEARD Robin - DAVID Marceau_
 
 ## Sommaire
 
-1. [Introduction](#Introduction)
-2. [Matériel](#Matériel)
-3. [Câblage](#Câblage)
-4. [Script Python](#Script-Python)
-5. [BDD MongoDB](#BDD-MongoDB)
-6. [Application Web Express.js](#Application-Web-Express.js)
-7. [Graphique Chart.js](#Graphique-Chart.js)
-8. [Lancement automatique des scripts](#Lancement-automatique-des-scripts)
+1. [Introduction](#Introduction)    
+    1.2. [Connection à la Raspberry en SSH](#Connection-à-la-Raspberry-en-SSH)    
+    1.3. [Matériel](#Matériel)    
+    1.4. [Câblage](#Câblage)    
+    1.5. [Script Python](#Script-Python)
+2. [BDD MongoDB](#BDD-MongoDB)
+3. [Application Web Express.js](#Application-Web-Express.js)
+4. [Graphique Chart.js](#Graphique-Chart.js)
+5. [Lancement automatique des scripts](#Lancement-automatique-des-scripts)
 
 ## Introduction
+
+Il étais demander de faire de IOT pour développer nos compétance. Il falait pour ca utiliser du Python, MongoDB et NodeJs.
+
+### Connection à la Raspberry en SSH
+
+Par défaut, SSH est installé sur la Raspberry Pi, mais est désactivé pour des raisons de sécurité. La première chose à faire sera donc d’activer SSH sur votre Raspberry Pi.
+
+Pour cela, il vous suffit de brancher la carte MicroSD de votre Raspberry Pi sur votre ordinateur, de vous rendre sur la carte, et de créer un fichier nommé ssh dans la partition boot.
+
+Client
+```bash
+ssh-keygen -t rsa
+ssh-copy-id -i id_rsa.pub pi@192.168.2.2
+```
+
+Raspberry
+```bash
+cp /home/pi/.ssh/authorized_key /root/.ssh/
+reboot
+```
+Client
+```bash
+root@192.168.2.2
+```
+
+Par Default
+ - Username: pi
+ - Password: raspberry
 
 ### Matériel
 
@@ -24,6 +53,7 @@ _BIGEARD Robin - DAVID Marceau_
   ![raspberry](/img/raspberry.jpg "Raspberry Pi 3 Modèle B")
 
 - 3 Cables
+  ![raspberry](/img/cables.jpg "Cables")
 
 ## Script Python
 
@@ -113,7 +143,7 @@ A chaque envoi de données le client va rafraîchir les données affichées et c
 
 `sudo nano /etc/rc.local`
 
-```
+```bash
 #!/bin/sh -e
 #
 # rc.local
@@ -139,6 +169,6 @@ node /home/pi/iot-express/server.js &
 exit 0
 ```
 
-Line for see bug:
+Line de commande pour le debug:
 
 `sudo bash -c 'python /home/pi/iot-express/dht11.py > /home/pi/iot-express/dht11.log 2>&1' &`
