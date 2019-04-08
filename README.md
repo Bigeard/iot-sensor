@@ -1,24 +1,43 @@
 # IOT Capteur de température
+*BIGEARD Robin - DAVID Marceau*
 
 ## Sommaire
 
-1. [Introduction](#Introduction)
-2. [Matériel](#Matériel)
-3. [Câblage](#Câblage)
-4. [Présenetation du code Python](#Présenetation-du-code-Python)
-5. [Database Mongodb](#Database-Mongodb)
-6. [Server Web Express](#Server-Web-Express)
-7. [Graphique-ChartJs](#Graphique-ChartJs)
-8. [L'ancement automatique des scripts](#L'ancement-automatique-des-scripts)
+1. [Introduction](#Introduction)    
+1.2 [Matériel](#Matériel)   
+1.3 [Câblage](#Câblage)   
+1.4 [Présenetation du code Python](#Présenetation-du-code-Python)
+2. [Database Mongodb](#Database-Mongodb)
+3. [Server Web Express](#Server-Web-Express)
+4. [Graphique-ChartJs](#Graphique-ChartJs)
+5. [L'ancement automatique des scripts](#L'ancement-automatique-des-scripts)
 
 ## Introduction
 
-## Matériel
+### Matériel
+  - DHT11   
+  ![alt text](/img/DHT11.jpg "DHT11")
 
-## Câblage
+  - Raspberry Pi 3 Modèle B (OS Raspbian)   
+  ![alt text](/img/raspberry.jpg "Raspberry Pi 3 Modèle B")
 
-## Présenetation du code Python
+  - 3 Cables  
+  ![alt text](/img/cables.jpg "Cables")
+### Câblage
 
+### Présenetation du code Python
+```
+sudo apt-get update
+sudo apt-get install python3-pip
+sudo python3 -m pip install --upgrade pip setuptools wheel
+```
+
+```
+sudo pip install Adafruit_DHT
+```
+```
+sudo python3 dht11.py install
+```
 ## Database Mongodb
 
 ## Server Web Express
