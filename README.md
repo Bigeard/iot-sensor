@@ -24,20 +24,42 @@
   - 3 Cables  
   ![alt text](/img/cables.jpg "Cables")
 ### Câblage
+Pour le Câblage il faudra mettre le brachement comme présenter sur le schéma.
 
-### Présenetation du code Python
-```
+  ![alt text](/img/schema.jpg "schema")
+  ![alt text](/img/schem.jpg "schem")
+### Code Python
+
+La premiere étape l'installation de Python 3, Pip 3 et Adafruit_DHT.
+```bash
 sudo apt-get update
+sudo apt-get upgarde
+sudo apt-get install python3
 sudo apt-get install python3-pip
 sudo python3 -m pip install --upgrade pip setuptools wheel
 ```
-
-```
+```bash
 sudo pip install Adafruit_DHT
 ```
-```
+```bash
 sudo python3 dht11.py install
 ```
+
+Code Python
+```python
+#!/usr/bin/python
+import sys
+import Adafruit_DHT
+from time import time, sleep
+import datetime
+
+while True:
+    humidity, temperature = Adafruit_DHT.read_retry(11, 4)
+    print 'Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(temperature, humidity)
+    sleep(59)
+```
+
+
 ## Database Mongodb
 
 ## Server Web Express
