@@ -1,28 +1,32 @@
 # IOT Capteur de température
-*BIGEARD Robin - DAVID Marceau*
+
+_BIGEARD Robin - DAVID Marceau_
 
 ## Sommaire
 
-1. [Introduction](#Introduction)    
-1.2 [Matériel](#Matériel)   
-1.3 [Câblage](#Câblage)   
-1.4 [Présenetation du code Python](#Présenetation-du-code-Python)
-2. [Database Mongodb](#Database-Mongodb)
-3. [Server Web Express](#Server-Web-Express)
-4. [Graphique-ChartJs](#Graphique-ChartJs)
-5. [L'ancement automatique des scripts](#L'ancement-automatique-des-scripts)
+1. [Introduction](#Introduction)
+2. [Matériel](#Matériel)
+3. [Câblage](#Câblage)
+4. [Script Python](#Script-Python)
+5. [BDD MongoDB](#BDD-MongoDB)
+6. [Application Web Express.js](#Application-Web-Express.js)
+7. [Graphique Chart.js](#Graphique-Chart.js)
+8. [Lancement automatique des scripts](#Lancement-automatique-des-scripts)
 
 ## Introduction
 
 ### Matériel
-  - DHT11   
-  ![alt text](/img/DHT11.jpg "DHT11")
 
-  - Raspberry Pi 3 Modèle B (OS Raspbian)   
-  ![alt text](/img/raspberry.jpg "Raspberry Pi 3 Modèle B")
+- DHT11  
+  ![dht11 sensor](/img/DHT11.jpg "DHT11")
 
-  - 3 Cables  
-  ![alt text](/img/cables.jpg "Cables")
+- Raspberry Pi 3 Modèle B (OS Raspbian)  
+  ![raspberry](/img/raspberry.jpg "Raspberry Pi 3 Modèle B")
+
+## Script Python
+
+Fichier : [dht11.py](https://github.com/marceaudavid/iot-sensor/blob/master/dht11.py)
+
 ### Câblage
 Pour le Câblage il faudra mettre le brachement comme présenter sur le schéma.
 
@@ -62,14 +66,48 @@ while True:
 
 ## Database Mongodb
 
-## Server Web Express
+## BDD MongoDB
 
-## Graphique ChartJs
+La base de données utilisé la DaaS (Database as a Service) de MongoDB: [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 
-## L'ancement automatique des scripts
+## Application Web Express.js
+
+Fichier : [server.js](https://github.com/marceaudavid/iot-sensor/blob/master/server.js)
+
+L'application est réalisé avec node.js et utilise le framework [express.js](https://expressjs.com/), le client mongodb et la librairie socket.io pour échanger les données en temps réel avec le protocole WebSocket.
+
+L'application s'appuie sur les streams mongoDB qui permettent de détecter en temps réel les changements dans la base de donnée. Lors d'une insertion en BDD, nous récupérons les 20 dernières entrée dans la base et les envoyons au client via socket.io.
+
+```javascript
+const stream = db.collection("data").watch();
+stream.on("change", change => {
+  if (change.operationType === "insert") {
+    db.collection("data")
+      .find()
+      .sort({ _id: -1 })
+      .limit(20)
+      .toArray((err, result) => {
+        if (err) return console.log(err);
+        console.log(result);
+        io.emit("data", result);
+      });
+  }
+});
+```
+
+## Graphique Chart.js
+
+Fichiers : [index.html](https://github.com/marceaudavid/iot-sensor/blob/master/public/index.html), [main.js](https://github.com/marceaudavid/iot-sensor/blob/master/public/js/main.js)
+
+Pour générer le graphique nous utilisons la librairie [chart.js](https://www.chartjs.org/).
+
+A chaque envoi de données le client va rafraîchir les données affichées et créer un nouveau graphique avec les données à jour.
+
+![website screenshot](/img/graph.png "Graphique")
+
+## Lancement automatique des scripts
 
 `sudo nano /etc/rc.local`
-
 
 ```
 #!/bin/sh -e
@@ -96,6 +134,7 @@ node /home/pi/iot-express/server.js &
 
 exit 0
 ```
-Line for see bug: 
+
+Line for see bug:
 
 `sudo bash -c 'python /home/pi/iot-express/dht11.py > /home/pi/iot-express/dht11.log 2>&1' &`
